@@ -16,7 +16,7 @@ public class User {
         this.password = password;
         this.name = name;
         this.dob = dob;
-        this.preferences = new ArrayList<>(preferences);
+        this.preferences = preferences;
     }
 
     public User() {
@@ -61,5 +61,11 @@ public class User {
 
     public void setPreferences(List<Double> preferences) {
         this.preferences = preferences;
+    }
+
+    @Override
+    public String toString() {
+        return "Username: " + username + "\nPassword: " + password + "\nName: " + name +
+                "\nDOB: " + dob;
     }
 }
