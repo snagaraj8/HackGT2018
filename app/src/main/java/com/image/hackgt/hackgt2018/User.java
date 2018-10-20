@@ -8,15 +8,26 @@ public class User {
     private String password;
     private String name;
     private String dob;
-    private List<Double> preferences;
+    private List<Integer> preferences;
 
     public User(String username, String password, String name, String dob,
-                List<Double> preferences) {
+                List<Integer> preferences) {
         this.username = username;
         this.password = password;
         this.name = name;
         this.dob = dob;
-        this.preferences = preferences;
+        if (preferences == null) {
+            // implies the user is new and has no set of preferences associated with it
+            List<Integer> unipref = new ArrayList<>(11);
+            for (int i = 0; i < 11; i++) {
+                unipref.add(1);
+            }
+            this.preferences = unipref;
+        } else {
+            this.preferences = new ArrayList<>(preferences);
+        }
+        this.preferences = preferences == null ? new ArrayList<Integer>()
+            : preferences;
     }
 
     public User() {
