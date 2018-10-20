@@ -66,11 +66,11 @@ public class User {
         this.dob = dob;
     }
 
-    public List<Double> getPreferences() {
-        return preferences;
+    public List<Integer> getPreferences() {
+        return this.preferences;
     }
 
-    public void setPreferences(List<Double> preferences) {
+    public void setPreferences(List<Integer> preferences) {
         this.preferences = preferences;
     }
 
