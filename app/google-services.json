@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "635651669815",
+    "firebase_url": "https://hackgt-ae2ce.firebaseio.com",
+    "project_id": "hackgt-ae2ce",
+    "storage_bucket": "hackgt-ae2ce.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:635651669815:android:44676f6ea4858dde",
+        "android_client_info": {
+          "package_name": "com.image.hackgt.hackgt2018"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "635651669815-4chruee90mu2gv80drjsm5n33uj7bp89.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.image.hackgt.hackgt2018",
+            "certificate_hash": "6fc7bc4b6316c2a5fbd93b1585aaafd9105339a9"
+          }
+        },
+        {
+          "client_id": "635651669815-87a2cr0l1495oree155ju1a674r5sdhj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBdIcHf6glUwgB7ASXaA_AS-vB_BE6nBbg"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "635651669815-87a2cr0l1495oree155ju1a674r5sdhj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
