@@ -30,7 +30,7 @@ import java.util.List;
 public class UpdateActivity extends AppCompatActivity {
     public static final int GET_FROM_GALLERY = 3;
     private static final String TAG = "UPDATE_ACTIVITY";
-    final float threshold = 0.7f;
+    final float threshold = 0.5f;
     private ImageView uploaded;
     private Bitmap bitmap;
 
