@@ -19,6 +19,7 @@ import com.google.firebase.database.ValueEventListener;
 public class FeedActivity extends AppCompatActivity {
     private Button logoutButton;
     private Button uploadButton;
+    private Button statsButton;
     private TextView emailTextView;
 
     private static final String TAG = "####MAIN PAGE ACTIVITY";
@@ -33,7 +34,8 @@ public class FeedActivity extends AppCompatActivity {
         setContentView(R.layout.activity_feed);
 
         logoutButton = findViewById(R.id.button_logout);
-        uploadButton= findViewById(R.id.button_upload);
+        uploadButton = findViewById(R.id.button_upload);
+        statsButton = findViewById(R.id.button_stats);
         emailTextView = findViewById(R.id.textView_email);
 
         mAuth = FirebaseAuth.getInstance();
@@ -54,6 +56,18 @@ public class FeedActivity extends AppCompatActivity {
                 uploadPressed();
             }
         });
+        statsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                statsPressed();
+            }
+        });
+    }
+
+    private void statsPressed() {
+        Intent intent = new Intent(FeedActivity.this,
+                StatsActivity.class);
+        startActivity(intent);
     }
 
     private void uploadPressed() {
