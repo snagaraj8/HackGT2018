@@ -85,7 +85,8 @@ public class UpdateActivity extends AppCompatActivity {
                                   String labelname = label.getLabel();
                                   //                          String entityId = label.getEntityId();
                                   float confidence = label.getConfidence();
-                                  output += "Label: " + labelname + " with confidence: " + confidence + "\n";
+                                  output += "Label: " + labelname + " with confidence: "
+                                        + confidence + "\n";
                               }
                               Log.d(TAG, output);
                               Toast.makeText(UpdateActivity.this, "Uploaded!",
@@ -97,8 +98,8 @@ public class UpdateActivity extends AppCompatActivity {
                           @Override
                           public void onFailure(@NonNull Exception e) {
                               // Task failed with an exception
-                              Toast.makeText(UpdateActivity.this, "Unexpected error occured",
-                                Toast.LENGTH_SHORT).show();
+                              Toast.makeText(UpdateActivity.this,
+                                "Unexpected error occurred", Toast.LENGTH_SHORT).show();
                           }
                       });
             } catch (FileNotFoundException e) {

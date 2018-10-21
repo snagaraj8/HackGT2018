@@ -1,33 +1,33 @@
 package com.image.hackgt.hackgt2018;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 public class User {
     private String username;
     private String password;
     private String name;
     private String dob;
-    private List<Integer> preferences;
+    private Map<String, Integer> preferences;
 
     public User(String username, String password, String name, String dob,
-                List<Integer> preferences) {
+                Map<String, Integer> preferences) {
         this.username = username;
         this.password = password;
         this.name = name;
         this.dob = dob;
         if (preferences == null) {
             // implies the user is new and has no set of preferences associated with it
-            List<Integer> unipref = new ArrayList<>(11);
-            for (int i = 0; i < 11; i++) {
-                unipref.add(1);
+            String[] features = new String[]{"camping", "car", "dance", "music", "running",
+                        "sports", "swim", "vacation"};
+            Map<String, Integer> unipref = new HashMap<>();
+            for (int i = 0; i < features.length; i++) {
+                unipref.put(features[i], 1);
             }
-            this.preferences = unipref;
+            this.preferences = new HashMap<>(unipref);
         } else {
-            this.preferences = new ArrayList<>(preferences);
+            this.preferences = new HashMap<>(preferences);
         }
-        this.preferences = preferences == null ? new ArrayList<Integer>()
-            : preferences;
     }
 
     public User() {
@@ -66,12 +66,12 @@ public class User {
         this.dob = dob;
     }
 
-    public List<Integer> getPreferences() {
+    public Map<String, Integer> getPreferences() {
         return this.preferences;
     }
 
-    public void setPreferences(List<Integer> preferences) {
-        this.preferences = preferences;
+    public void setPreferences(Map<String, Integer> preferences) {
+        this.preferences = new HashMap<>(preferences);
     }
 
     @Override

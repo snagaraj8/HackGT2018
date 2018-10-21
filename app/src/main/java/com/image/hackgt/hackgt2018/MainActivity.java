@@ -61,9 +61,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void onCancelPressed() {
-        Intent intent = new Intent(MainActivity.this,
-                UpdateActivity.class);
-        startActivity(intent);
+//        Intent intent = new Intent(MainActivity.this,
+//                UpdateActivity.class);
+//        startActivity(intent);
         //Toast.makeText(MainActivity.this, "Canceled!", Toast.LENGTH_SHORT).show();
     }
 
