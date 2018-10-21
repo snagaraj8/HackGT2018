@@ -17,6 +17,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -110,6 +111,7 @@ public class FeedActivity extends AppCompatActivity {
     private void statsPressed() {
         Intent intent = new Intent(FeedActivity.this,
                 StatsActivity.class);
+        intent.putExtra("preferences", (Serializable) user.getPreferences());
         startActivity(intent);
     }
 
