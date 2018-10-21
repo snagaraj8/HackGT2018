@@ -1,11 +1,15 @@
 package com.image.hackgt.hackgt2018;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,18 +20,30 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 public class FeedActivity extends AppCompatActivity {
     private Button logoutButton;
     private Button uploadButton;
     private Button statsButton;
+    private Button nextButton;
+    private Button prevButton;
     private TextView emailTextView;
 
+    ImageView imageView;
+
     private static final String TAG = "####MAIN PAGE ACTIVITY";
+
+    private List<String> ads;
+    private int currentIndex;
 
     private FirebaseAuth mAuth;
     private DatabaseReference myRef;
 
     private User user = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,7 +52,10 @@ public class FeedActivity extends AppCompatActivity {
         logoutButton = findViewById(R.id.button_logout);
         uploadButton = findViewById(R.id.button_upload);
         statsButton = findViewById(R.id.button_stats);
+        nextButton = findViewById(R.id.button_next);
+        prevButton = findViewById(R.id.button_previous);
         emailTextView = findViewById(R.id.textView_email);
+        imageView = findViewById(R.id.imageView);
 
         mAuth = FirebaseAuth.getInstance();
         FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -62,6 +81,42 @@ public class FeedActivity extends AppCompatActivity {
                 statsPressed();
             }
         });
+        nextButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                nextPressed();
+            }
+        });
+        prevButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                prevPressed();
+            }
+        });
+
+        String[] tempArr = {"car1", "swim2", "camping3", "dance4", "music5", "car2", "sports6",
+                "running7", "vacation8"};
+        ads = new ArrayList<>(Arrays.asList(tempArr));
+        currentIndex = 0;
+
+        showImage(ads.get(currentIndex));
+    }
+
+    private void prevPressed() {
+        if (currentIndex > 0) {
+            showImage(ads.get(--currentIndex));
+        }
+    }
+
+    private void nextPressed() {
+        if (currentIndex < (ads.size() - 1)) {
+            showImage(ads.get(++currentIndex));
+        }
+    }
+
+    private void showImage(String imageName) {
+        int resId = getResources().getIdentifier(imageName, "drawable", getPackageName());
+        imageView.setImageResource(resId);
     }
 
     private void statsPressed() {
