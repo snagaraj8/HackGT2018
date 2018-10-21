@@ -1,11 +1,8 @@
 package com.image.hackgt.hackgt2018;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -21,22 +18,23 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class FeedActivity extends AppCompatActivity {
     private Button logoutButton;
     private Button uploadButton;
     private Button statsButton;
     private Button nextButton;
-    private Button prevButton;
     private TextView emailTextView;
 
     ImageView imageView;
 
     private static final String TAG = "####MAIN PAGE ACTIVITY";
 
-    private List<String> ads;
+//    private List<String> ads;
+    private List<String> distribArray;
     private int currentIndex;
 
     private FirebaseAuth mAuth;
@@ -53,7 +51,6 @@ public class FeedActivity extends AppCompatActivity {
         uploadButton = findViewById(R.id.button_upload);
         statsButton = findViewById(R.id.button_stats);
         nextButton = findViewById(R.id.button_next);
-        prevButton = findViewById(R.id.button_previous);
         emailTextView = findViewById(R.id.textView_email);
         imageView = findViewById(R.id.imageView);
 
@@ -87,31 +84,22 @@ public class FeedActivity extends AppCompatActivity {
                 nextPressed();
             }
         });
-        prevButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                prevPressed();
-            }
-        });
 
-        String[] tempArr = {"car1", "swim2", "camping3", "dance4", "music5", "car2", "sports6",
-                "running7", "vacation8"};
-        ads = new ArrayList<>(Arrays.asList(tempArr));
-        currentIndex = 0;
-
-        showImage(ads.get(currentIndex));
-    }
-
-    private void prevPressed() {
-        if (currentIndex > 0) {
-            showImage(ads.get(--currentIndex));
-        }
+//        String[] tempArr = {"car1", "swim2", "camping3", "dance4", "music5", "car2", "sports6",
+//                "running7", "vacation8"};
+//        ads = new ArrayList<>(Arrays.asList(tempArr));
+//        currentIndex = 0;
+//
+//        showImage(ads.get(currentIndex));
     }
 
     private void nextPressed() {
-        if (currentIndex < (ads.size() - 1)) {
-            showImage(ads.get(++currentIndex));
-        }
+//        int randx = Random.nextInt(distribArray.size());
+//        showImage(ads.get(currentIndex));
+        int randx = (int) (Math.random() * distribArray.size());
+        int randi = ((int) (Math.random() * 9 + 1));
+        Log.d(TAG, "Image sampled: " + distribArray.get(randx) + randi);
+        showImage(distribArray.get(randx) + randi);
     }
 
     private void showImage(String imageName) {
@@ -156,6 +144,9 @@ public class FeedActivity extends AppCompatActivity {
                     String UID = mAuth.getCurrentUser().getUid();
                     user = dataSnapshot.child("users").child(UID).getValue(User.class);
                     emailTextView.setText(user.getName());
+                    // set up distribution of interests/preferences
+                    constructDistribution(user.getPreferences());
+                    nextPressed(); // to display image immediately after receiving user data
                 } catch (NullPointerException e) {
                     user = null;
                     emailTextView.setText("No User Detected");
@@ -169,5 +160,25 @@ public class FeedActivity extends AppCompatActivity {
             }
         });
     }
+    @Override
+    public void onResume() {
+        super.onResume();
+        // check if the intent has the updated preferences attached to them
+        if (getIntent().hasExtra("preferences")) {
+            // set up distribution of interests/preferences
+            constructDistribution((HashMap<String, Integer>) (getIntent()
+              .getSerializableExtra("preferences")));
 
+        }
+    }
+    private void constructDistribution(Map<String, Integer> preferences) {
+        List<String> preferenceDist = new ArrayList<>();
+        for (String key: preferences.keySet()) {
+            int count = preferences.get(key);
+            for (int i = 0; i < count; i++) {
+                preferenceDist.add(key);
+            }
+        }
+        distribArray = new ArrayList<>(preferenceDist);
+    }
 }
