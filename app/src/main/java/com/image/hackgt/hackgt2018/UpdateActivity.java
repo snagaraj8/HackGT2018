@@ -18,6 +18,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -31,6 +32,7 @@ import com.google.firebase.ml.vision.label.FirebaseVisionLabelDetectorOptions;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.List;
 
 public class UpdateActivity extends AppCompatActivity {
@@ -51,10 +53,17 @@ public class UpdateActivity extends AppCompatActivity {
         uploaded = findViewById(R.id.uploadImageView);
         bitmap = null;
         final Button upload = findViewById(R.id.upload_button);
+        final Button back = findViewById(R.id.back_button);
         upload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 uploadClicked(threshold);
+            }
+        });
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
             }
         });
 
@@ -97,11 +106,42 @@ public class UpdateActivity extends AppCompatActivity {
                               // Task completed successfully
                               String output = "";
                               for (FirebaseVisionLabel label: labels) {
-                                  String labelname = label.getLabel();
-                                  //                          String entityId = label.getEntityId();
+                                  String labelname = label.getLabel().toLowerCase();
                                   float confidence = label.getConfidence();
                                   output += "Label: " + labelname + " with confidence: "
                                         + confidence + "\n";
+                                  if (labelname.contains("sport")) {
+                                      user.getPreferences().put("sports",
+                                            user.getPreferences().get("sports") + 1);
+                                  }
+                                  if (labelname.contains("music")) {
+                                      user.getPreferences().put("music",
+                                        user.getPreferences().get("music") + 1);
+                                  }
+                                  if (labelname.contains("run")) {
+                                      user.getPreferences().put("run",
+                                        user.getPreferences().get("run") + 1);
+                                  }
+                                  if (labelname.contains("vacation")) {
+                                      user.getPreferences().put("vacation",
+                                        user.getPreferences().get("vacation") + 1);
+                                  }
+                                  if (labelname.contains("camping")) {
+                                      user.getPreferences().put("camping",
+                                        user.getPreferences().get("camping") + 1);
+                                  }
+                                  if (labelname.contains("swim")) {
+                                      user.getPreferences().put("swim",
+                                        user.getPreferences().get("swim") + 1);
+                                  }
+                                  if (labelname.contains("dance")) {
+                                      user.getPreferences().put("dance",
+                                        user.getPreferences().get("dance") + 1);
+                                  }
+                                  if (labelname.contains("car")) {
+                                      user.getPreferences().put("car",
+                                        user.getPreferences().get("car") + 1);
+                                  }
                               }
                               Log.d(TAG, output);
                               Toast.makeText(UpdateActivity.this, "Uploaded!",
@@ -146,5 +186,18 @@ public class UpdateActivity extends AppCompatActivity {
                 Log.d(TAG, "Failed to read value.", error.toException());
             }
         });
+    }
+    @Override
+    public void onBackPressed() {
+        FirebaseUser firebaseUser = mAuth.getCurrentUser();
+        String UID = firebaseUser.getUid();
+
+        // Add to DB
+        myRef.child("users").child(UID).setValue(user);
+
+        Intent intent = new Intent(UpdateActivity.this,
+            FeedActivity.class);
+        intent.putExtra("preferences", (Serializable) user.getPreferences());
+        startActivity(intent);
     }
 }
