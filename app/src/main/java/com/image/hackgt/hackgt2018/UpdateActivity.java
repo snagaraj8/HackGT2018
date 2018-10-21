@@ -17,6 +17,12 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.ml.vision.FirebaseVision;
 import com.google.firebase.ml.vision.common.FirebaseVisionImage;
 import com.google.firebase.ml.vision.label.FirebaseVisionLabel;
@@ -33,6 +39,10 @@ public class UpdateActivity extends AppCompatActivity {
     final float threshold = 0.5f;
     private ImageView uploaded;
     private Bitmap bitmap;
+    private FirebaseAuth mAuth;
+    private DatabaseReference myRef;
+
+    private User user = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +57,11 @@ public class UpdateActivity extends AppCompatActivity {
                 uploadClicked(threshold);
             }
         });
+
+        mAuth = FirebaseAuth.getInstance();
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        myRef = database.getReference();
+        getUserInfo();
     }
 
     private void uploadClicked(float threshold) {
@@ -110,5 +125,26 @@ public class UpdateActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
+    }
+    private void getUserInfo() {
+        // Read from the database
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                try {
+                    String UID = mAuth.getCurrentUser().getUid();
+                    user = dataSnapshot.child("users").child(UID).getValue(User.class);
+                    Log.d(TAG, "user info\n" + user);
+                } catch (NullPointerException e) {
+                    user = null;
+                }
+                myRef.removeEventListener(this);
+            }
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+                Log.d(TAG, "Failed to read value.", error.toException());
+            }
+        });
     }
 }
